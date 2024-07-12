@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ChangeDetectorRef,
   Component,
@@ -6,6 +7,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -25,14 +27,19 @@ import { CommonModule } from '@angular/common';
   templateUrl: './osmosys-form.component.html',
   styles: '',
 })
-export class OsmosysFormComponent implements OnInit {
+export class OsmosysFormComponent implements OnInit, OnChanges {
   @Input() formJsonData: any;
+
   @Input() modelData: any;
+
   @Output() formSubmit = new EventEmitter<any>();
+
   @Output() formInstance = new EventEmitter<FormGroup>();
+
   @Output() buttonAction = new EventEmitter<{ action: string; form: FormGroup }>();
 
   form: FormGroup;
+
   formConfig: any;
 
   constructor(
@@ -50,13 +57,14 @@ export class OsmosysFormComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['formJsonData']) {
+    if (changes.formJsonData) {
       this.formConfig = this.formJsonData || {};
       this.createForm(this.formConfig.layout.rows);
       this.cdr.detectChanges();
       this.formInstance.emit(this.form);
     }
-    if (changes['modelData'] && !changes['formJsonData']) {
+
+    if (changes.modelData && !changes.formJsonData) {
       this.updateFormValues(this.modelData);
     }
   }
@@ -79,6 +87,7 @@ export class OsmosysFormComponent implements OnInit {
             element.type === 'color'
           ) {
             const validations: ValidatorFn[] = [];
+
             if (element.validations) {
               element.validations.forEach((validation: any) => {
                 if (validation.validator === 'required') {
@@ -94,6 +103,7 @@ export class OsmosysFormComponent implements OnInit {
                 }
               });
             }
+
             group[element.name] = this.fb.control(element.value || '', validations);
           }
         });
@@ -120,6 +130,7 @@ export class OsmosysFormComponent implements OnInit {
   validateAllFormFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
+
       if (control instanceof FormGroup) {
         this.validateAllFormFields(control);
       } else {
