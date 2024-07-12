@@ -11,7 +11,7 @@
       >
         <div
           *ngFor="let column of row.columns"
-          [ngClass]="'col-' + column.span + ' ' + column.styleClass ? column.styleClass : ''"
+          [ngClass]="'col-' + column.span + ' ' + (column.styleClass || '')"
         >
           <ng-container *ngFor="let element of column.elements">
             <div [ngClass]="element.styleClass">
