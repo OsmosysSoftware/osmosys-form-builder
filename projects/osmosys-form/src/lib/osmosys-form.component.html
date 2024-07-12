@@ -1,0 +1,326 @@
+<div class="container mt-5">
+  <div *ngIf="formConfig">
+    <div *ngIf="formConfig.title" [ngClass]="formConfig.title.class">
+      <h2>{{ formConfig.title.text }}</h2>
+    </div>
+    <form [formGroup]="form" class="p-4 border rounded bg-light needs-validation" novalidate>
+      <div
+        *ngFor="let row of formConfig.layout.rows"
+        class="row mb-3"
+        [ngClass]="row.styleClass ? row.styleClass : ''"
+      >
+        <div
+          *ngFor="let column of row.columns"
+          [ngClass]="'col-' + column.span + ' ' + column.styleClass ? column.styleClass : ''"
+        >
+          <ng-container *ngFor="let element of column.elements">
+            <div [ngClass]="element.styleClass">
+              <ng-container [ngSwitch]="element.type">
+                <!-- Input elements will be inserted here based on type -->
+                <!-- Input field (Text, Email, Password, etc.) -->
+                <div *ngSwitchCase="'input'" class="form-group">
+                  <label [for]="element.name">{{ element.label }}</label>
+                  <input
+                    [type]="element.inputType"
+                    [formControlName]="element.name"
+                    [ngClass]="
+                      element.class +
+                      ' ' +
+                      (form.get(element.name)?.valid
+                        ? 'is-valid'
+                        : form.get(element.name)?.touched && form.get(element.name)?.invalid
+                          ? 'is-invalid'
+                          : '')
+                    "
+                    [id]="element.name"
+                    class="form-control"
+                  />
+                  <div
+                    *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
+                    class="invalid-feedback"
+                  >
+                    <div *ngFor="let validation of element.validations">
+                      <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
+                        {{ validation.message }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Select field -->
+                <div *ngSwitchCase="'select'" class="form-group">
+                  <label [for]="element.name">{{ element.label }}</label>
+                  <select
+                    [formControlName]="element.name"
+                    [ngClass]="
+                      element.class +
+                      ' ' +
+                      (form.get(element.name)?.valid
+                        ? 'is-valid'
+                        : form.get(element.name)?.touched && form.get(element.name)?.invalid
+                          ? 'is-invalid'
+                          : '')
+                    "
+                    [id]="element.name"
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option value="">{{ 'Select ' + element.label }}</option>
+                    <option *ngFor="let option of element.options" [value]="option.value">
+                      {{ option.label }}
+                    </option>
+                  </select>
+                  <div
+                    *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
+                    class="invalid-feedback"
+                  >
+                    <div *ngFor="let validation of element.validations">
+                      <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
+                        {{ validation.message }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Range field -->
+                <div *ngSwitchCase="'range'" class="form-group">
+                  <label [for]="element.name">{{ element.label }}</label>
+                  <input
+                    type="range"
+                    [formControlName]="element.name"
+                    [min]="element.min"
+                    [max]="element.max"
+                    [ngClass]="
+                      element.class +
+                      ' ' +
+                      (form.get(element.name)?.valid
+                        ? 'is-valid'
+                        : form.get(element.name)?.touched && form.get(element.name)?.invalid
+                          ? 'is-invalid'
+                          : '')
+                    "
+                    [id]="element.name"
+                    class="form-range"
+                  />
+                  <div class="d-flex justify-content-between">
+                    <span>{{ element.min }}</span>
+                    <span>{{ form.get(element.name)?.value }}</span>
+                    <span>{{ element.max }}</span>
+                  </div>
+                  <div
+                    *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
+                    class="invalid-feedback"
+                  >
+                    <div *ngFor="let validation of element.validations">
+                      <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
+                        {{ validation.message }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Date field -->
+                <div *ngSwitchCase="'date'" class="form-group">
+                  <label [for]="element.name">{{ element.label }}</label>
+                  <input
+                    type="date"
+                    [formControlName]="element.name"
+                    [ngClass]="
+                      element.class +
+                      ' ' +
+                      (form.get(element.name)?.valid
+                        ? 'is-valid'
+                        : form.get(element.name)?.touched && form.get(element.name)?.invalid
+                          ? 'is-invalid'
+                          : '')
+                    "
+                    [id]="element.name"
+                    class="form-control"
+                  />
+                  <div
+                    *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
+                    class="invalid-feedback"
+                  >
+                    <div *ngFor="let validation of element.validations">
+                      <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
+                        {{ validation.message }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- File upload field -->
+                <div *ngSwitchCase="'file'" class="form-group">
+                  <label [for]="element.name">{{ element.label }}</label>
+                  <input
+                    type="file"
+                    [formControlName]="element.name"
+                    [ngClass]="
+                      element.class +
+                      ' ' +
+                      (form.get(element.name)?.valid
+                        ? 'is-valid'
+                        : form.get(element.name)?.touched && form.get(element.name)?.invalid
+                          ? 'is-invalid'
+                          : '')
+                    "
+                    [id]="element.name"
+                    class="form-control"
+                  />
+                  <div
+                    *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
+                    class="invalid-feedback"
+                  >
+                    <div *ngFor="let validation of element.validations">
+                      <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
+                        {{ validation.message }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Multiselect field -->
+                <div *ngSwitchCase="'multiselect'" class="form-group">
+                  <label [for]="element.name">{{ element.label }}</label>
+                  <select
+                    [formControlName]="element.name"
+                    [ngClass]="
+                      element.class +
+                      ' ' +
+                      (form.get(element.name)?.valid
+                        ? 'is-valid'
+                        : form.get(element.name)?.touched && form.get(element.name)?.invalid
+                          ? 'is-invalid'
+                          : '')
+                    "
+                    [id]="element.name"
+                    multiple
+                    class="form-control"
+                  >
+                    <option *ngFor="let option of element.options" [value]="option.value">
+                      {{ option.label }}
+                    </option>
+                  </select>
+                  <div
+                    *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
+                    class="invalid-feedback"
+                  >
+                    <div *ngFor="let validation of element.validations">
+                      <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
+                        {{ validation.message }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Button field -->
+                <ng-container *ngSwitchCase="'button'" class="form-group">
+                  <button
+                    [type]="element.action === 'submit' ? 'submit' : 'button'"
+                    [ngClass]="element.class"
+                    [disabled]="element.action === 'submit' && form.invalid"
+                    (click)="handleButtonClick(element.action)"
+                  >
+                    {{ element.label }}
+                  </button>
+                </ng-container>
+
+                <!-- Color field -->
+                <div *ngSwitchCase="'color'" class="form-group">
+                  <label [for]="element.name">{{ element.label }}</label>
+                  <input
+                    type="color"
+                    [formControlName]="element.name"
+                    [ngClass]="
+                      element.class +
+                      ' ' +
+                      (form.get(element.name)?.valid
+                        ? 'is-valid'
+                        : form.get(element.name)?.touched && form.get(element.name)?.invalid
+                          ? 'is-invalid'
+                          : '')
+                    "
+                    [id]="element.name"
+                    class="form-control form-control-color"
+                  />
+                  <div
+                    *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
+                    class="invalid-feedback"
+                  >
+                    <div *ngFor="let validation of element.validations">
+                      <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
+                        {{ validation.message }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Radio button field -->
+                <div *ngSwitchCase="'radio'" class="form-group">
+                  <label [for]="element.name">{{ element.label }}</label>
+                  <div
+                    *ngFor="let option of element.options"
+                    class="form-check"
+                    [ngClass]="{ 'form-check-inline': element.inline }"
+                  >
+                    <input
+                      type="radio"
+                      [formControlName]="element.name"
+                      [value]="option.value"
+                      [ngClass]="
+                        element.class +
+                        ' ' +
+                        (form.get(element.name)?.valid
+                          ? ''
+                          : form.get(element.name)?.touched && form.get(element.name)?.invalid
+                            ? 'is-invalid'
+                            : '')
+                      "
+                      [id]="element.name + '_' + option.value"
+                      class="form-check-input"
+                    />
+                    <label class="form-check-label" [for]="element.name + '_' + option.value">
+                      {{ option.label }}
+                    </label>
+                  </div>
+                  <div
+                    *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
+                    class="invalid-feedback"
+                  >
+                    <div *ngFor="let validation of element.validations">
+                      <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
+                        {{ validation.message }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'textarea'" class="form-group">
+                  <label [for]="element.name">{{ element.label }}</label>
+                  <textarea
+                    [formControlName]="element.name"
+                    [rows]="element.rows"
+                    [ngClass]="
+                      element.class +
+                      ' ' +
+                      (form.get(element.name)?.valid
+                        ? 'is-valid'
+                        : form.get(element.name)?.touched && form.get(element.name)?.invalid
+                          ? 'is-invalid'
+                          : '')
+                    "
+                    [id]="element.name"
+                    class="form-control"
+                  ></textarea>
+                  <div
+                    *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
+                    class="invalid-feedback"
+                  >
+                    <div *ngFor="let validation of element.validations">
+                      <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
+                        {{ validation.message }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
