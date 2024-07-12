@@ -57,14 +57,16 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.formJsonData) {
+    // eslint-disable-next-line dot-notation
+    if (changes['formJsonData']) {
       this.formConfig = this.formJsonData || {};
       this.createForm(this.formConfig.layout.rows);
       this.cdr.detectChanges();
       this.formInstance.emit(this.form);
     }
 
-    if (changes.modelData && !changes.formJsonData) {
+    // eslint-disable-next-line dot-notation
+    if (changes['modelData'] && !changes['formJsonData']) {
       this.updateFormValues(this.modelData);
     }
   }
