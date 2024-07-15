@@ -33,6 +33,7 @@
                           : '')
                     "
                     [id]="element.name"
+                    [readonly]="element.readonly || false"
                     class="form-control"
                   />
                   <div
@@ -64,6 +65,7 @@
                     class="form-select"
                     aria-label="Default select example"
                   >
+                    <!--can add disabled property-->
                     <option value="">{{ 'Select ' + element.label }}</option>
                     <option *ngFor="let option of element.options" [value]="option.value">
                       {{ option.label }}
@@ -355,6 +357,10 @@
                       </div>
                     </div>
                   </div>
+                </div>
+                <!--paragraph field-->
+                <div *ngSwitchCase="'paragraph'" class="form-group">
+                  <p>{{ element.value }}</p>
                 </div>
               </ng-container>
             </div>
