@@ -288,6 +288,7 @@
                     </div>
                   </div>
                 </div>
+                <!-- Textarea field -->
                 <div *ngSwitchCase="'textarea'" class="form-group">
                   <label [for]="element.name">{{ element.label }}</label>
                   <textarea
@@ -305,6 +306,45 @@
                     [id]="element.name"
                     class="form-control"
                   ></textarea>
+                  <div
+                    *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
+                    class="invalid-feedback"
+                  >
+                    <div *ngFor="let validation of element.validations">
+                      <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
+                        {{ validation.message }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Checkbox field -->
+                <div *ngSwitchCase="'checkbox'" class="form-group">
+                  <label [for]="element.name">{{ element.label }}</label>
+                  <div
+                    *ngFor="let option of element.options"
+                    class="form-check"
+                    [ngClass]="{ 'form-check-inline': element.inline }"
+                  >
+                    <input
+                      type="checkbox"
+                      [formControlName]="element.name"
+                      [value]="option.value"
+                      [ngClass]="
+                        element.class +
+                        ' ' +
+                        (form.get(element.name)?.valid
+                          ? ''
+                          : form.get(element.name)?.touched && form.get(element.name)?.invalid
+                            ? 'is-invalid'
+                            : '')
+                      "
+                      [id]="element.name + '_' + option.value"
+                      class="form-check-input"
+                    />
+                    <label class="form-check-label" [for]="element.name + '_' + option.value">
+                      {{ option.label }}
+                    </label>
+                  </div>
                   <div
                     *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
                     class="invalid-feedback"
