@@ -102,6 +102,10 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
                   validations.push(Validators.pattern(validation.value));
                 } else if (validation.validator === 'requiredTrue') {
                   validations.push(Validators.requiredTrue);
+                } else if (validation.validator === 'max') {
+                  validations.push(Validators.max(validation.value));
+                } else if (validation.validator === 'min') {
+                  validations.push(Validators.min(validation.value));
                 }
               });
             }
