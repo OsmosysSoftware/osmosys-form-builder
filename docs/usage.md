@@ -2,12 +2,14 @@
 
 #### Table of Contents
 
-1. [Introduction](#introduction)
-2. [Setting Up the Library](#setting-up-the-library)
-3. [Creating the Configuration](#creating-the-configuration)
-4. [Using in Parent Component](#using-in-parent-component)
-5. [Supported Features](#supported-features)
-6. [Demo Repository](#demo-repository)
+- [Osmosys Form Library Documentation](#osmosys-form-library-documentation)
+  - [Table of Contents](#table-of-contents)
+- [1. Introduction](#1-introduction)
+- [2. Setting Up the Library](#2-setting-up-the-library)
+- [3. Creating the Configuration](#3-creating-the-configuration)
+- [4. Using in Parent Component](#4-using-in-parent-component)
+- [5. Supported Features](#5-supported-features)
+- [6. Demo Repository](#6-demo-repository)
 
 ### 1. Introduction
 
