@@ -35,6 +35,9 @@
                     [id]="element.name"
                     [readonly]="element.readonly || false"
                     class="form-control"
+                    (change)="handleEvent(element.events?.change, $event)"
+                    (focus)="handleEvent(element.events?.focus, $event)"
+                    (blur)="handleEvent(element.events?.blur, $event)"
                   />
                   <div
                     *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
@@ -64,6 +67,9 @@
                     [id]="element.name"
                     class="form-select"
                     aria-label="Default select example"
+                    (change)="handleEvent(element.events?.change, $event)"
+                    (focus)="handleEvent(element.events?.focus, $event)"
+                    (blur)="handleEvent(element.events?.blur, $event)"
                   >
                     <!--can add disabled property-->
                     <option value="">{{ 'Select ' + element.label }}</option>
@@ -102,6 +108,9 @@
                     "
                     [id]="element.name"
                     class="form-range"
+                    (change)="handleEvent(element.events?.change, $event)"
+                    (focus)="handleEvent(element.events?.focus, $event)"
+                    (blur)="handleEvent(element.events?.blur, $event)"
                   />
                   <div class="d-flex justify-content-between">
                     <span>{{ element.min }}</span>
@@ -136,6 +145,9 @@
                     "
                     [id]="element.name"
                     class="form-control"
+                    (change)="handleEvent(element.events?.change, $event)"
+                    (focus)="handleEvent(element.events?.focus, $event)"
+                    (blur)="handleEvent(element.events?.blur, $event)"
                   />
                   <div
                     *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
@@ -165,6 +177,9 @@
                     "
                     [id]="element.name"
                     class="form-control"
+                    (change)="handleEvent(element.events?.change, $event)"
+                    (focus)="handleEvent(element.events?.focus, $event)"
+                    (blur)="handleEvent(element.events?.blur, $event)"
                   />
                   <div
                     *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
@@ -194,6 +209,9 @@
                     [id]="element.name"
                     multiple
                     class="form-control"
+                    (change)="handleEvent(element.events?.change, $event)"
+                    (focus)="handleEvent(element.events?.focus, $event)"
+                    (blur)="handleEvent(element.events?.blur, $event)"
                   >
                     <option *ngFor="let option of element.options" [value]="option.value">
                       {{ option.label }}
@@ -239,6 +257,9 @@
                     "
                     [id]="element.name"
                     class="form-control form-control-color"
+                    (change)="handleEvent(element.events?.change, $event)"
+                    (focus)="handleEvent(element.events?.focus, $event)"
+                    (blur)="handleEvent(element.events?.blur, $event)"
                   />
                   <div
                     *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
@@ -274,6 +295,9 @@
                       "
                       [id]="element.name + '_' + option.value"
                       class="form-check-input"
+                      (change)="handleEvent(element.events?.change, $event)"
+                      (focus)="handleEvent(element.events?.focus, $event)"
+                      (blur)="handleEvent(element.events?.blur, $event)"
                     />
                     <label class="form-check-label" [for]="element.name + '_' + option.value">
                       {{ option.label }}
@@ -307,6 +331,9 @@
                     "
                     [id]="element.name"
                     class="form-control"
+                    (change)="handleEvent(element.events?.change, $event)"
+                    (focus)="handleEvent(element.events?.focus, $event)"
+                    (blur)="handleEvent(element.events?.blur, $event)"
                   ></textarea>
                   <div
                     *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
@@ -342,6 +369,9 @@
                       "
                       [id]="element.name + '_' + option.value"
                       class="form-check-input"
+                      (change)="handleEvent(element.events?.change, $event)"
+                      (focus)="handleEvent(element.events?.focus, $event)"
+                      (blur)="handleEvent(element.events?.blur, $event)"
                     />
                     <label class="form-check-label" [for]="element.name + '_' + option.value">
                       {{ option.label }}

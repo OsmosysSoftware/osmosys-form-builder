@@ -32,6 +32,8 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
 
   @Input() modelData: any;
 
+  @Input() eventHandlers: { [key: string]: (event: Event) => void } = {};
+
   @Output() formSubmit = new EventEmitter<any>();
 
   @Output() formInstance = new EventEmitter<FormGroup>();
@@ -130,6 +132,18 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
       this.onReset();
     } else {
       this.buttonAction.emit({ action, form: this.form });
+    }
+  }
+
+  handleEvent(eventName: string, event: Event): void {
+    // Retrieve the user's event handler function from the passed eventHandlers object
+    const method = this.eventHandlers[eventName];
+
+    // Check if the method exists and call it if it does
+    if (method) {
+      method(event);
+    } else {
+      console.warn(`No handler found for event: ${eventName}`);
     }
   }
 
