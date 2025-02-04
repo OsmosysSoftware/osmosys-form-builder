@@ -23,6 +23,9 @@
                   <input
                     [type]="element.inputType"
                     [formControlName]="element.name"
+                    [placeholder]="
+                      element.placeholder ? element.placeholder : 'Enter ' + element.label
+                    "
                     [ngClass]="
                       element.class +
                       ' ' +
@@ -34,6 +37,7 @@
                     "
                     [id]="element.name"
                     [readonly]="element.readonly || false"
+                    [autocomplete]="element.autocomplete || 'off'"
                     class="form-control"
                   />
                   <div
@@ -64,9 +68,12 @@
                     [id]="element.name"
                     class="form-select"
                     aria-label="Default select example"
+                    [autocomplete]="element.autocomplete || 'off'"
                   >
                     <!--can add disabled property-->
-                    <option value="">{{ 'Select ' + element.label }}</option>
+                    <option value="">
+                      {{ element.placeholder ? element.placeholder : 'Select ' + element.label }}
+                    </option>
                     <option *ngFor="let option of element.options" [value]="option.value">
                       {{ option.label }}
                     </option>
@@ -102,6 +109,7 @@
                     "
                     [id]="element.name"
                     class="form-range"
+                    [autocomplete]="element.autocomplete || 'off'"
                   />
                   <div class="d-flex justify-content-between">
                     <span>{{ element.min }}</span>
@@ -136,6 +144,7 @@
                     "
                     [id]="element.name"
                     class="form-control"
+                    [autocomplete]="element.autocomplete || 'off'"
                   />
                   <div
                     *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
@@ -239,6 +248,7 @@
                     "
                     [id]="element.name"
                     class="form-control form-control-color"
+                    [autocomplete]="element.autocomplete || 'off'"
                   />
                   <div
                     *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"
@@ -296,6 +306,9 @@
                   <textarea
                     [formControlName]="element.name"
                     [rows]="element.rows"
+                    [placeholder]="
+                      element.placeholder ? element.placeholder : 'Enter ' + element.label
+                    "
                     [ngClass]="
                       element.class +
                       ' ' +
@@ -307,6 +320,7 @@
                     "
                     [id]="element.name"
                     class="form-control"
+                    [autocomplete]="element.autocomplete || 'off'"
                   ></textarea>
                   <div
                     *ngIf="form.get(element.name)?.touched && form.get(element.name)?.invalid"

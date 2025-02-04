@@ -110,7 +110,10 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
               });
             }
 
-            group[element.name] = this.fb.control(element.value || '', validations);
+            group[element.name] = this.fb.control(
+              { value: element.value || '', disabled: element.disabled || false },
+              validations,
+            );
           }
         });
       });
