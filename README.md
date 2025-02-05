@@ -32,7 +32,7 @@ OsmosysForm is comprised of the following components:
 2. **FormService**: A service for handling API calls and form submission logic.
 3. **Validators**: Custom validators for various input types and conditions.
 
-## Setup and Usage
+## Setup/Installation and Usage
 
 Read about how to use it [here](docs/usage.md)
 
@@ -59,11 +59,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 We appreciate the time and effort put in by all contributors to make this project better!
 
 ---
-
-## Installation and Usage
-
-[Publishing Library](projects/osmosys-form/README.md)
-
-TODO: Add detailed installation and usage instructions here.
 
 For more help on the Angular CLI, use `ng help` or check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
