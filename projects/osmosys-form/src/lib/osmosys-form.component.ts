@@ -53,6 +53,9 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.formConfig = this.formJsonData || {}; // Load input configuration
     this.createForm(this.formConfig.layout.rows);
+    if (this.formConfig.layout?.rows) {
+      this.createForm(this.formConfig.layout.rows);
+    }
     this.formInstance.emit(this.form);
   }
 
