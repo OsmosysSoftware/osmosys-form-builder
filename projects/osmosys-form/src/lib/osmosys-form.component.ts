@@ -150,6 +150,7 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
     if (method) {
       method(event);
     } else {
+      // eslint-disable-next-line no-console
       console.warn(`No handler found for event: ${eventName}`);
     }
   }
