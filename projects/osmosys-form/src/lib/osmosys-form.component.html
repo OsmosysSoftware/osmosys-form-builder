@@ -19,7 +19,6 @@
                 <!-- Input elements will be inserted here based on type -->
                 <!-- Input field (Text, Email, Password, etc.) -->
                 <div *ngSwitchCase="'input'" class="form-group">
-                  <label [for]="element.name">{{ element.label }}</label>
                   <label [for]="element.name">{{ translate(element.label) }}</label>
                   <input
                     [type]="element.inputType"
@@ -56,7 +55,6 @@
                 </div>
                 <!-- Select field -->
                 <div *ngSwitchCase="'select'" class="form-group">
-                  <label [for]="element.name">{{ element.label }}</label>
                   <label [for]="element.name">{{ translate(element.label) }}</label>
                   <select
                     [formControlName]="element.name"
@@ -102,7 +100,6 @@
 
                 <!-- Range field -->
                 <div *ngSwitchCase="'range'" class="form-group">
-                  <label [for]="element.name">{{ element.label }}</label>
                   <label [for]="element.name">{{ translate(element.label) }}</label>
                   <input
                     type="range"
@@ -144,7 +141,6 @@
                 </div>
                 <!-- Date field -->
                 <div *ngSwitchCase="'date'" class="form-group">
-                  <label [for]="element.name">{{ element.label }}</label>
                   <label [for]="element.name">{{ translate(element.label) }}</label>
                   <input
                     type="date"
@@ -179,7 +175,6 @@
                 </div>
                 <!-- File upload field -->
                 <div *ngSwitchCase="'file'" class="form-group">
-                  <label [for]="element.name">{{ element.label }}</label>
                   <label [for]="element.name">{{ translate(element.label) }}</label>
                   <input
                     type="file"
@@ -214,7 +209,6 @@
                 </div>
                 <!-- Multiselect field -->
                 <div *ngSwitchCase="'multiselect'" class="form-group">
-                  <label [for]="element.name">{{ element.label }}</label>
                   <label [for]="element.name">{{ translate(element.label) }}</label>
                   <select
                     [formControlName]="element.name"
@@ -267,7 +261,6 @@
 
                 <!-- Color field -->
                 <div *ngSwitchCase="'color'" class="form-group">
-                  <label [for]="element.name">{{ element.label }}</label>
                   <label [for]="element.name">{{ translate(element.label) }}</label>
                   <input
                     type="color"
@@ -302,7 +295,6 @@
                 </div>
                 <!-- Radio button field -->
                 <div *ngSwitchCase="'radio'" class="form-group">
-                  <label [for]="element.name">{{ element.label }}</label>
                   <label [for]="element.name">{{ translate(element.label) }}</label>
                   <div
                     *ngFor="let option of element.options"
@@ -348,7 +340,6 @@
                 </div>
                 <!-- Textarea field -->
                 <div *ngSwitchCase="'textarea'" class="form-group">
-                  <label [for]="element.name">{{ element.label }}</label>
                   <label [for]="element.name">{{ translate(element.label) }}</label>
                   <textarea
                     [formControlName]="element.name"
@@ -384,7 +375,6 @@
                 </div>
                 <!-- Checkbox field -->
                 <div *ngSwitchCase="'checkbox'" class="form-group">
-                  <label [for]="element.name">{{ element.label }}</label>
                   <label [for]="element.name">{{ translate(element.label) }}</label>
                   <div
                     *ngFor="let option of element.options"
