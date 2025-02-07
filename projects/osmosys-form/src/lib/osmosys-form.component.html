@@ -47,7 +47,6 @@
                   >
                     <div *ngFor="let validation of element.validations">
                       <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
-                        {{ validation.message }}
                         {{ translate(validation.message) }}
                       </div>
                     </div>
@@ -81,7 +80,6 @@
                       {{ element.placeholder ? translate(element.placeholder) : '' }}
                     </option>
                     <option *ngFor="let option of element.options" [value]="option.value">
-                      {{ option.label }}
                       {{ translate(option.label) }}
                     </option>
                   </select>
@@ -91,7 +89,6 @@
                   >
                     <div *ngFor="let validation of element.validations">
                       <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
-                        {{ validation.message }}
                         {{ translate(validation.message) }}
                       </div>
                     </div>
@@ -133,7 +130,6 @@
                   >
                     <div *ngFor="let validation of element.validations">
                       <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
-                        {{ validation.message }}
                         {{ translate(validation.message) }}
                       </div>
                     </div>
@@ -167,7 +163,6 @@
                   >
                     <div *ngFor="let validation of element.validations">
                       <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
-                        {{ validation.message }}
                         {{ translate(validation.message) }}
                       </div>
                     </div>
@@ -201,7 +196,6 @@
                   >
                     <div *ngFor="let validation of element.validations">
                       <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
-                        {{ validation.message }}
                         {{ translate(validation.message) }}
                       </div>
                     </div>
@@ -230,7 +224,6 @@
                     (blur)="handleEvent(element.events?.blur, $event)"
                   >
                     <option *ngFor="let option of element.options" [value]="option.value">
-                      {{ option.label }}
                       {{ translate(option.label) }}
                     </option>
                   </select>
@@ -240,7 +233,6 @@
                   >
                     <div *ngFor="let validation of element.validations">
                       <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
-                        {{ validation.message }}
                         {{ translate(validation.message) }}
                       </div>
                     </div>
@@ -254,7 +246,6 @@
                     [disabled]="element.action === 'submit' && form.invalid"
                     (click)="handleButtonClick(element.action)"
                   >
-                    {{ element.label }}
                     {{ translate(element.label) }}
                   </button>
                 </ng-container>
@@ -287,7 +278,6 @@
                   >
                     <div *ngFor="let validation of element.validations">
                       <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
-                        {{ validation.message }}
                         {{ translate(validation.message) }}
                       </div>
                     </div>
@@ -322,7 +312,6 @@
                       (blur)="handleEvent(element.events?.blur, $event)"
                     />
                     <label class="form-check-label" [for]="element.name + '_' + option.value">
-                      {{ option.label }}
                       {{ translate(option.label) }}
                     </label>
                   </div>
@@ -332,7 +321,6 @@
                   >
                     <div *ngFor="let validation of element.validations">
                       <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
-                        {{ validation.message }}
                         {{ translate(validation.message) }}
                       </div>
                     </div>
@@ -367,7 +355,6 @@
                   >
                     <div *ngFor="let validation of element.validations">
                       <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
-                        {{ validation.message }}
                         {{ translate(validation.message) }}
                       </div>
                     </div>
@@ -402,7 +389,6 @@
                       (blur)="handleEvent(element.events?.blur, $event)"
                     />
                     <label class="form-check-label" [for]="element.name + '_' + option.value">
-                      {{ option.label }}
                       {{ translate(option.label) }}
                     </label>
                   </div>
@@ -412,7 +398,6 @@
                   >
                     <div *ngFor="let validation of element.validations">
                       <div *ngIf="form.get(element.name)?.errors?.[validation.name]">
-                        {{ validation.message }}
                         {{ translate(validation.message) }}
                       </div>
                     </div>
@@ -420,7 +405,6 @@
                 </div>
                 <!--paragraph field-->
                 <div *ngSwitchCase="'paragraph'" class="form-group">
-                  <p>{{ element.value }}</p>
                   <p>{{ translate(element.value) }}</p>
                 </div>
               </ng-container>
