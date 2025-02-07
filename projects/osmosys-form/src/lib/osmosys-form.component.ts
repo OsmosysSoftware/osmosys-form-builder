@@ -19,6 +19,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'osmosys-form',
@@ -33,6 +34,10 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
   @Input() modelData: any;
 
   @Input() eventHandlers: { [key: string]: (event: Event) => void } = {};
+
+  @Input() useTranslation = false;
+
+  @Input() translateService!: TranslateService;
 
   @Output() formSubmit = new EventEmitter<any>();
 
@@ -178,5 +183,19 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
     }, {});
 
     this.form.reset(defaultValues);
+  }
+
+  translate(key: string): string {
+    if (this.useTranslation && this.translateService) {
+      if (key) {
+        return this.translateService.instant(key) || key;
+      }
+
+      // eslint-disable-next-line no-console
+      console.warn(`Translation key is empty: ${key}`);
+      return ''; // Return an empty string if the key is invalid
+    }
+
+    return key; // Return the key as fallback if translation is not used
   }
 }
