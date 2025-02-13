@@ -37,6 +37,8 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
 
   @Input() useTranslation = false;
 
+  @Input() overrides: { [key: string]: any } = {};
+
   @Input() translateService!: TranslateService;
 
   @Output() formSubmit = new EventEmitter<any>();
@@ -125,12 +127,34 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
               { value: element.value || '', disabled: element.disabled || false },
               validations,
             );
+            this.applyOverrides(element);
           }
         });
       });
     });
     this.form = this.fb.group(group);
     this.updateFormValues(this.modelData);
+  }
+
+  applyOverrides(element: any) {
+    if (element.overrides) {
+      Object.keys(element.overrides).forEach((key) => {
+        const overrideFunction = this.overrides[element.overrides[key]];
+        if (overrideFunction) {
+          if (key === 'options') {
+            console.log(`Applying override for ${element.name}: ${key}`);
+            overrideFunction().subscribe((data: any) => {
+              console.log(`Fetched options for ${element.name}:`, data);
+              element[key] = data;
+            });
+          } else if (key === 'placeholder') {
+            element[key] = overrideFunction();
+          } else {
+            element[key] = overrideFunction();
+          }
+        }
+      });
+    }
   }
 
   updateFormValues(data: any) {
@@ -148,16 +172,46 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
   }
 
   handleEvent(eventName: string, event: Event): void {
-    // Retrieve the user's event handler function from the passed eventHandlers object
+    console.log(`Event triggered: ${eventName}`);
     const method = this.eventHandlers[eventName];
-
-    // Check if the method exists and call it if it does
     if (method) {
       method(event);
     } else {
-      // eslint-disable-next-line no-console
-      console.warn(`No handler found for event: ${eventName}`);
+      console.warn(`No handler found for event: ${eventName}`, event);
     }
+
+    // Handle dependent dropdowns
+    const target = event.target as HTMLSelectElement;
+    const elementName = target.name;
+    const selectedValue = target.value;
+    console.log(`Element name: ${elementName}, Selected value: ${selectedValue}`);
+
+    // Find the element with the dependent dropdown
+    const dependentElement = this.findDependentElement(elementName);
+    if (dependentElement) {
+      console.log(`Found dependent element: ${dependentElement.name}`);
+      const overrideFunction = this.overrides[dependentElement.overrides.options];
+      if (overrideFunction) {
+        overrideFunction(selectedValue).subscribe((data: any) => {
+          console.log(`Fetched options for ${dependentElement.name}:`, data);
+          dependentElement.options = data;
+          this.cdr.detectChanges();
+        });
+      }
+    }
+  }
+
+  findDependentElement(elementName: string): any {
+    for (const row of this.formConfig.layout.rows) {
+      for (const column of row.columns) {
+        for (const element of column.elements) {
+          if (element.dependentOn === elementName) {
+            return element;
+          }
+        }
+      }
+    }
+    return null;
   }
 
   validateAllFormFields(formGroup: FormGroup) {
@@ -173,16 +227,7 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
   }
 
   onReset() {
-    const defaultValues = this.formConfig.layout.rows.reduce((acc: any, row: any) => {
-      row.columns.forEach((column: any) => {
-        column.elements.forEach((element: any) => {
-          acc[element.name] = element.value;
-        });
-      });
-      return acc;
-    }, {});
-
-    this.form.reset(defaultValues);
+    this.form.reset();
   }
 
   translate(key: string): string {

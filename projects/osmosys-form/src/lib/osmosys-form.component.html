@@ -74,10 +74,8 @@
                     (focus)="handleEvent(element.events?.focus, $event)"
                     (blur)="handleEvent(element.events?.blur, $event)"
                   >
-                    <!--can add disabled property-->
-                    <option value="">{{ 'Select ' + element.label }}</option>
                     <option value="">
-                      {{ element.placeholder ? translate(element.placeholder) : '' }}
+                      {{ element.placeholder ? translate(element.placeholder) : 'Select ' + element.label }}
                     </option>
                     <option *ngFor="let option of element.options" [value]="option.value">
                       {{ translate(option.label) }}
