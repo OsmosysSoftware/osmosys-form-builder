@@ -139,6 +139,11 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
   applyOverrides(element: any) {
     if (element.overrides) {
       Object.keys(element.overrides).forEach((key) => {
+        // For dependent elements, skip applying override during initialization
+        if (key === 'options' && element.dependentOn) {
+          console.log(`Skipping applying override for dependent element ${element.name} during initialization as it depends on '${element.dependentOn}'.`);
+          return;
+        }
         const overrideFunction = this.overrides[element.overrides[key]];
         if (overrideFunction) {
           if (key === 'options') {
@@ -180,23 +185,39 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
       console.warn(`No handler found for event: ${eventName}`, event);
     }
 
-    // Handle dependent dropdowns
-    const target = event.target as HTMLSelectElement;
-    const elementName = target.name;
-    const selectedValue = target.value;
-    console.log(`Element name: ${elementName}, Selected value: ${selectedValue}`);
+    if (event.type === 'change') {
+      // Retrieve the element's id or name
+      const target = event.target as HTMLSelectElement;
+      const elementName = target.getAttribute('id') || target.getAttribute('name') || '';
+      const selectedValue = target.value;
+      console.log(`Change event detected on element: ${elementName} with selected value: ${selectedValue}`);
 
-    // Find the element with the dependent dropdown
-    const dependentElement = this.findDependentElement(elementName);
-    if (dependentElement) {
-      console.log(`Found dependent element: ${dependentElement.name}`);
-      const overrideFunction = this.overrides[dependentElement.overrides.options];
-      if (overrideFunction) {
-        overrideFunction(selectedValue).subscribe((data: any) => {
-          console.log(`Fetched options for ${dependentElement.name}:`, data);
-          dependentElement.options = data;
-          this.cdr.detectChanges();
-        });
+      // Locate the dependent dropdown based on the current element's name
+      const dependentElement = this.findDependentElement(elementName);
+      if (dependentElement) {
+        console.log(`Found dependent element: ${dependentElement.name}`);
+        const overrideKey = dependentElement.overrides ? dependentElement.overrides.options : undefined;
+        if (overrideKey) {
+          const overrideFunction = this.overrides[overrideKey];
+          if (overrideFunction) {
+            // Now pass only the selected value to the override function as it represents the parent's choice
+            console.log(`Triggering override for dependent element '${dependentElement.name}' with selected value: ${selectedValue}`);
+            overrideFunction(selectedValue).subscribe((data: any) => {
+              console.log(`Fetched options for ${dependentElement.name}:`, data);
+              dependentElement.options = data;
+              this.cdr.detectChanges();
+            }, (error: Error) => {
+              console.error(`Error fetching options for ${dependentElement.name}:`, error);
+            });
+          } else {
+            console.warn(`No override function found for key '${overrideKey}' on dependent element: ${dependentElement.name}`);
+          }
+        } else {
+          console.warn(`Dependent element '${dependentElement.name}' does not have an override configuration for options. Sending parameters as undefined.`);
+          // Optionally trigger fallback logic here
+        }
+      } else {
+        console.log(`No dependent element found for element: ${elementName}`);
       }
     }
   }
