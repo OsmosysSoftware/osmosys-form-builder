@@ -71,6 +71,8 @@
                     aria-label="Default select example"
                     [autocomplete]="element.autocomplete || 'off'"
                     (change)="handleEvent('change', $event)"
+                    (focus)="handleEvent('focus', $event)"
+                    (blur)="handleEvent('blur', $event)"
                   >
                     <option value="">
                       {{
