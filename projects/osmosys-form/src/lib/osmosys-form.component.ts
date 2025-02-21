@@ -185,41 +185,129 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
       console.warn(`No handler found for event: ${eventName}`, event);
     }
 
-    if (event.type === 'change') {
-      // Retrieve the element's id or name
-      const target = event.target as HTMLSelectElement;
-      const elementName = target.getAttribute('id') || target.getAttribute('name') || '';
-      const selectedValue = target.value;
-      console.log(`Change event detected on element: ${elementName} with selected value: ${selectedValue}`);
+    // Refactored event handling using switch-case on event.type
+    switch (event.type) {
+      case 'change':
+        this.processChangeEvent(event);
+        break;
+      case 'focus':
+        this.processFocusEvent(event);
+        break;
+      case 'blur':
+        this.processBlurEvent(event);
+        break;
+      default:
+        console.log(`Unhandled event type: ${event.type}`);
+    }
+  }
 
-      // Locate the dependent dropdown based on the current element's name
-      const dependentElement = this.findDependentElement(elementName);
-      if (dependentElement) {
-        console.log(`Found dependent element: ${dependentElement.name}`);
-        const overrideKey = dependentElement.overrides ? dependentElement.overrides.options : undefined;
-        if (overrideKey) {
-          const overrideFunction = this.overrides[overrideKey];
-          if (overrideFunction) {
-            // Now pass only the selected value to the override function as it represents the parent's choice
-            console.log(`Triggering override for dependent element '${dependentElement.name}' with selected value: ${selectedValue}`);
-            overrideFunction(selectedValue).subscribe((data: any) => {
-              console.log(`Fetched options for ${dependentElement.name}:`, data);
-              dependentElement.options = data;
-              this.cdr.detectChanges();
-            }, (error: Error) => {
-              console.error(`Error fetching options for ${dependentElement.name}:`, error);
-            });
-          } else {
-            console.warn(`No override function found for key '${overrideKey}' on dependent element: ${dependentElement.name}`);
-          }
+  processChangeEvent(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    const elementName = target.getAttribute('id') || target.getAttribute('name') || '';
+    const selectedValue = target.value;
+    console.log(`Change event detected on element: ${elementName} with selected value: ${selectedValue}`);
+
+    // Locate dependent dropdown
+    const dependentElement = this.findDependentElement(elementName);
+    if (dependentElement) {
+      console.log(`Found dependent element: ${dependentElement.name}`);
+      const overrideKey = dependentElement.overrides ? dependentElement.overrides.options : undefined;
+      if (overrideKey) {
+        const overrideFunction = this.overrides[overrideKey];
+        if (overrideFunction) {
+          console.log(`Triggering override for dependent element '${dependentElement.name}' with selected value: ${selectedValue}`);
+          overrideFunction(selectedValue).subscribe((data: any) => {
+            console.log(`Fetched options for ${dependentElement.name}:`, data);
+            dependentElement.options = data;
+            this.cdr.detectChanges();
+          }, (error: Error) => {
+            console.error(`Error fetching options for ${dependentElement.name}:`, error);
+          });
         } else {
-          console.warn(`Dependent element '${dependentElement.name}' does not have an override configuration for options. Sending parameters as undefined.`);
-          // Optionally trigger fallback logic here
+          console.warn(`No override function found for key '${overrideKey}' on dependent element: ${dependentElement.name}`);
         }
       } else {
-        console.log(`No dependent element found for element: ${elementName}`);
+        console.warn(`Dependent element '${dependentElement.name}' does not have an override configuration for options. Sending parameters as undefined.`);
+      }
+    } else {
+      console.log(`No dependent element found for element: ${elementName}`);
+    }
+  }
+
+  processFocusEvent(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const elementName = target.getAttribute('id') || target.getAttribute('name') || '';
+    console.log(`Focus event detected on element: ${elementName}`);
+
+    // Failsafe: if an override function is provided for focus event on this element, call it
+    const element = this.findElementByName(elementName);
+    if (element && element.overrides && element.overrides.focus) {
+      const focusOverride = this.overrides[element.overrides.focus];
+      if (focusOverride) {
+        console.log(`Triggering focus override for element: ${elementName}`);
+        try {
+          const result = focusOverride();
+          if (result && typeof result.subscribe === 'function') {
+            result.subscribe((data: any) => {
+              console.log(`Focus override result for ${elementName}:`, data);
+              // Optionally update element properties based on data
+              this.cdr.detectChanges();
+            }, (error: Error) => {
+              console.error(`Error in focus override for ${elementName}:`, error);
+            });
+          } else {
+            console.warn(`Focus override for ${elementName} did not return an observable.`);
+          }
+        } catch (err) {
+          console.error(`Exception while invoking focus override for ${elementName}:`, err);
+        }
       }
     }
+  }
+
+  processBlurEvent(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const elementName = target.getAttribute('id') || target.getAttribute('name') || '';
+    console.log(`Blur event detected on element: ${elementName}`);
+
+    // Failsafe: if an override function is provided for blur event on this element, call it
+    const element = this.findElementByName(elementName);
+    if (element && element.overrides && element.overrides.blur) {
+      const blurOverride = this.overrides[element.overrides.blur];
+      if (blurOverride) {
+        console.log(`Triggering blur override for element: ${elementName}`);
+        try {
+          const result = blurOverride();
+          if (result && typeof result.subscribe === 'function') {
+            result.subscribe((data: any) => {
+              console.log(`Blur override result for ${elementName}:`, data);
+              // Optionally update element properties based on data
+              this.cdr.detectChanges();
+            }, (error: Error) => {
+              console.error(`Error in blur override for ${elementName}:`, error);
+            });
+          } else {
+            console.warn(`Blur override for ${elementName} did not return an observable.`);
+          }
+        } catch (err) {
+          console.error(`Exception while invoking blur override for ${elementName}:`, err);
+        }
+      }
+    }
+  }
+
+  // Helper function to locate an element by its name in the form configuration
+  findElementByName(elementName: string): any {
+    for (const row of this.formConfig.layout.rows) {
+      for (const column of row.columns) {
+        for (const element of column.elements) {
+          if (element.name === elementName) {
+            return element;
+          }
+        }
+      }
+    }
+    return null;
   }
 
   findDependentElement(elementName: string): any {
