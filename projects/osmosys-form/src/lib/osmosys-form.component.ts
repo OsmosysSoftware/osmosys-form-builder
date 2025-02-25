@@ -21,6 +21,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 
+const logger = console;
+
 @Component({
   selector: 'osmosys-form',
   standalone: true,
@@ -184,7 +186,7 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
     if (method) {
       method(event);
     } else {
-      console.warn(`No handler found for event: ${eventName}`, event);
+      logger.warn(`No handler found for event: ${eventName}`, event);
     }
 
     // Refactored event handling using switch-case on event.type
@@ -199,7 +201,7 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
         this.processBlurEvent(event);
         break;
       default:
-        console.warn(`Unhandled event type: ${event.type}`);
+        logger.warn(`Unhandled event type: ${event.type}`);
     }
   }
 
@@ -225,21 +227,21 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
               this.cdr.detectChanges();
             },
             (error: Error) => {
-              console.error(`Error fetching options for ${dependentElement.name}:`, error);
+              logger.error(`Error fetching options for ${dependentElement.name}:`, error);
             },
           );
         } else {
-          console.warn(
+          logger.warn(
             `No override function found for key '${overrideKey}' on dependent element: ${dependentElement.name}`,
           );
         }
       } else {
-        console.warn(
+        logger.warn(
           `Dependent element '${dependentElement.name}' does not have an override configuration for options. Sending parameters as undefined.`,
         );
       }
     } else {
-      console.warn(`No dependent element found for element: ${elementName}`);
+      logger.warn(`No dependent element found for element: ${elementName}`);
     }
   }
 
@@ -263,14 +265,14 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
                 this.cdr.detectChanges();
               },
               (error: Error) => {
-                console.error(`Error in focus override for ${elementName}:`, error);
+                logger.error(`Error in focus override for ${elementName}:`, error);
               },
             );
           } else {
-            console.warn(`Focus override for ${elementName} did not return an observable.`);
+            logger.warn(`Focus override for ${elementName} did not return an observable.`);
           }
         } catch (err) {
-          console.error(`Exception while invoking focus override for ${elementName}:`, err);
+          logger.error(`Exception while invoking focus override for ${elementName}:`, err);
         }
       }
     }
@@ -296,14 +298,14 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
                 this.cdr.detectChanges();
               },
               (error: Error) => {
-                console.error(`Error in blur override for ${elementName}:`, error);
+                logger.error(`Error in blur override for ${elementName}:`, error);
               },
             );
           } else {
-            console.warn(`Blur override for ${elementName} did not return an observable.`);
+            logger.warn(`Blur override for ${elementName} did not return an observable.`);
           }
         } catch (err) {
-          console.error(`Exception while invoking blur override for ${elementName}:`, err);
+          logger.error(`Exception while invoking blur override for ${elementName}:`, err);
         }
       }
     }
@@ -352,7 +354,7 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
       }
 
       // eslint-disable-next-line no-console
-      console.warn(`Translation key is empty: ${key}`);
+      logger.warn(`Translation key is empty: ${key}`);
       return ''; // Return an empty string if the key is invalid
     }
 
