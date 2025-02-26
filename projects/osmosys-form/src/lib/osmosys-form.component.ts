@@ -151,8 +151,7 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
         if (overrideFunction) {
           if (key === 'options') {
             overrideFunction().subscribe((data: any) => {
-              // eslint-disable-next-line no-param-reassign
-              element[key] = data;
+              Object.assign(element, { [key]: data });
             });
           } else if (key === 'placeholder') {
             // eslint-disable-next-line no-param-reassign
@@ -213,10 +212,7 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
     const dependentElement = this.findDependentElement(elementName);
 
     if (dependentElement) {
-      const overrideKey = dependentElement.overrides
-        ? dependentElement.overrides.options
-        : undefined;
-
+      const overrideKey = dependentElement.overrides?.options;
       if (overrideKey) {
         const overrideFunction = this.overrides[overrideKey];
 
