@@ -213,6 +213,7 @@ export class OsmosysFormComponent implements OnInit, OnChanges {
 
     if (dependentElement) {
       const overrideKey = dependentElement.overrides?.options;
+
       if (overrideKey) {
         const overrideFunction = this.overrides[overrideKey];
 
