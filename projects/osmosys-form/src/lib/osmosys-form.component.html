@@ -70,14 +70,16 @@
                     class="form-select"
                     aria-label="Default select example"
                     [autocomplete]="element.autocomplete || 'off'"
-                    (change)="handleEvent(element.events?.change, $event)"
-                    (focus)="handleEvent(element.events?.focus, $event)"
-                    (blur)="handleEvent(element.events?.blur, $event)"
+                    (change)="handleEvent('change', $event)"
+                    (focus)="handleEvent('focus', $event)"
+                    (blur)="handleEvent('blur', $event)"
                   >
-                    <!--can add disabled property-->
-                    <option value="">{{ 'Select ' + element.label }}</option>
                     <option value="">
-                      {{ element.placeholder ? translate(element.placeholder) : '' }}
+                      {{
+                        element.placeholder
+                          ? translate(element.placeholder)
+                          : 'Select ' + element.label
+                      }}
                     </option>
                     <option *ngFor="let option of element.options" [value]="option.value">
                       {{ translate(option.label) }}

@@ -343,7 +343,8 @@
           {
             "vars": "all",
             "args": "after-used",
-            "ignoreRestSiblings": true
+            "ignoreRestSiblings": true,
+             "varsIgnorePattern": "^_"
           }
         ],
         "no-use-before-define": [
